@@ -1,3 +1,7 @@
+[![CircleCI Build Status](https://circleci.com/gh/matheusfillipe/chartlyrics.svg?style=shield)](https://circleci.com/gh/matheusfillipe/chartlyrics)
+[![Pypi](https://badge.fury.io/py/chartlyrics.svg)](https://pypi.org/project/chartlyrics/)
+[![Chat with me on irc](https://img.shields.io/badge/-IRC-gray?logo=gitter)](https://mangle.ga/irc)
+
 # ChartLyrics API
 
 This is a simple wrapper for: http://api.chartlyrics.com. You can search for songs, artists and get the lyrics.
