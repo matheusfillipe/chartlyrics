@@ -19,10 +19,14 @@ for song in client.search_text("starts with one"):
     if "park" in song.artist.lower():
       print(song.artist)  # Linking Park
       print(song.lyrics)  # Starts with one\n One thing I dont know why...
-    
 ```
 
 You can also use `song.lyrics_object` which will return a `Lyrics` object that you can index strophes and verses on:
+
+```python
+lyrics = song.lyrics_object
+print(lyrics[0][-1])  # first strophe last verse
+```
 
 Check the `tests` for more examples.
 

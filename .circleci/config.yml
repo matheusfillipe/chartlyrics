@@ -1,0 +1,94 @@
+version: 2.1
+workflows:
+  build_and_deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - test-python-install:
+          version: "3.8"
+          requires:
+            - build
+      - test-python-install:
+          version: "3.9"
+          requires:
+            - build
+      - test-python-install:
+          version: "3.10"
+          requires:
+            - build
+      - deploy:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v[0-9]+(\.[0-9]+)*$/
+            branches:
+              ignore: /.*/
+
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run:
+      - run:
+          name: install poetry and python dependencies
+          command: |
+            python3 -m pip install --user poetry
+            poetry install
+            poetry build
+
+  test-python-install:
+    parameters:
+      version:
+        type: string
+        default: latest
+    docker:
+      - image: cimg/python:<< parameters.version >>
+    steps:
+      - checkout
+      - run:
+          name: install poetry and python dependencies
+          command: |
+            python3 -m pip install --user poetry
+            poetry install
+      - run:
+          name: Run Tests
+          command: |
+            python3 --version
+            poetry run pytest -vvv
+      - run:
+          name: Smoke Test Install 
+          command: |
+            python3 --version
+            pip install .
+
+  deploy:
+    docker:
+      - image: cimg/python:3.10
+    steps:
+      - run:
+          name: Checkout
+          command: |
+            git clone https://github.com/matheusfillipe/ircbot.git .
+            git fetch --all
+      - run:
+          name: install poetry and python dependencies
+          command: |
+            python3 -m pip install --user poetry
+            poetry install
+      - run:
+          name: Setup Credentials 
+          command: |
+            poetry config http-basic.pypi "$PYPI_USERNAME" "$PYPI_PASSWORD""
+      - run:
+          name: create packages
+          command: |
+            poetry build
+      - run:
+          name: upload to pypi
+          command: |
+            poetry publish

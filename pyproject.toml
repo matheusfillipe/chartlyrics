@@ -1,9 +1,12 @@
 [tool.poetry]
 name = "chartlyrics"
-version = "0.1.0"
+version = "0.1.1"
 description = "Wrapper for chartlyrics api: http://api.chartlyrics.com"
 authors = ["matheusfillipe <matheusfillipeag@gmail.com>"]
 license = "MIT"
+readme = "README.md"
+repository = "https://github.com/matheusfillipe/chartlyrics"
+homepage = "https://github.com/matheusfillipe/chartlyrics"
 
 [tool.poetry.dependencies]
 python = "^3.8"
