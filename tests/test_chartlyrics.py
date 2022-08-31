@@ -3,7 +3,7 @@ from chartlyrics.lyrics import Lyrics
 
 client = ChartLyricsClient()
 
-def text_lyrics_parsing():
+def test_lyrics_parsing():
     sample = """
     One thing I don't know why
     It doesn't even matter how hard you try
@@ -25,11 +25,15 @@ def text_lyrics_parsing():
 
     lyrics = Lyrics(sample)
     assert lyrics[0][0] == "One thing I don't know why"
+    assert lyrics[1][2] == "Watch it fly by as the pendulum swings"
+    assert lyrics[-1][-1] == "I wasted it all just to watch you go"
 
 
 def test_search_text():
     lyrics = ""
     for song in client.search_text("starts with one"):
         if "park" in song.artist.lower():
-            lyrics += song.lyric
-    assert "starts with one" in lyrics
+            lyrics = song.lyrics_object
+            break
+    assert "starts with one" in str(lyrics)
+    assert lyrics[0][-1] == "A memory of a time when"

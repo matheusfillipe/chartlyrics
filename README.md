@@ -22,6 +22,8 @@ for song in client.search_text("starts with one"):
     
 ```
 
+You can also use `song.lyrics_object` which will return a `Lyrics` object that you can index strophes and verses on:
+
 Check the `tests` for more examples.
 
 ## Development
