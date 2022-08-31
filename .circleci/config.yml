@@ -30,9 +30,13 @@ workflows:
 jobs:
   build:
     docker:
-      - image: cimg/python:3.9
+      - image: cimg/python:3.10
     steps:
-      - checkout
+      - run:
+          name: Checkout
+          command: |
+            git clone https://github.com/matheusfillipe/ircbot.git .
+            git fetch --all
       - run:
           name: install poetry and python dependencies
           command: |
@@ -82,7 +86,7 @@ jobs:
       - run:
           name: Setup Credentials 
           command: |
-            poetry config http-basic.pypi "$PYPI_USERNAME" "$PYPI_PASSWORD""
+            poetry config http-basic.pypi "$PYPI_USERNAME" "$PYPI_PASSWORD"
       - run:
           name: create packages
           command: |
