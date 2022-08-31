@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "chartlyrics"
-version = "0.1.2"
+version = "0.1.3"
 description = "Wrapper for chartlyrics api: http://api.chartlyrics.com"
 authors = ["matheusfillipe <matheusfillipeag@gmail.com>"]
 license = "MIT"

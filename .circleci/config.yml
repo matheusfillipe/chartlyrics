@@ -82,6 +82,7 @@ jobs:
           name: install poetry and python dependencies
           command: |
             python3 -m pip install --user poetry
+            ./version.sh
             poetry install
       - run:
           name: Setup Credentials 
