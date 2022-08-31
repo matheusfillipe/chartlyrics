@@ -12,7 +12,7 @@ def main(search_query, artist):
         for song in client.search_text(search_query):
             print(str(song))
         return
-    for song in client.search_artist_and_song(search_query, artist):
+    for song in client.search_artist_and_song(artist, search_query):
         print(str(song))
 
 if __name__ == '__main__':
