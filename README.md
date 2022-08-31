@@ -38,13 +38,13 @@ Check the `tests` for more examples.
 
 Fork the repo, run:
 
-``` sh
+```sh
 poetry install
 ```
 
 Add features, write tests, run:
 
-``` sh
+```sh
 poetry run pytest
 ```
 
