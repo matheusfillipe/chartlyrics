@@ -34,7 +34,6 @@ jobs:
     steps:
       - checkout
       - run:
-      - run:
           name: install poetry and python dependencies
           command: |
             python3 -m pip install --user poetry
