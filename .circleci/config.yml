@@ -35,7 +35,7 @@ jobs:
       - run:
           name: Checkout
           command: |
-            git clone https://github.com/matheusfillipe/ircbot.git .
+            git clone https://github.com/matheusfillipe/chartlyrics.git .
             git fetch --all
       - run:
           name: install poetry and python dependencies
@@ -76,7 +76,7 @@ jobs:
       - run:
           name: Checkout
           command: |
-            git clone https://github.com/matheusfillipe/ircbot.git .
+            git clone https://github.com/matheusfillipe/chartlyrics.git .
             git fetch --all
       - run:
           name: install poetry and python dependencies
