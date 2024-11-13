@@ -1,20 +1,25 @@
-from dataclasses import dataclass, asdict, fields
-from typing import Generator
+from dataclasses import asdict, dataclass, fields
+from typing import Generator, Optional
 
 import requests
 from lxml import etree as ElementTree
+
 from .lyrics import Lyrics
 
 API = "http://api.chartlyrics.com/apiv1.asmx/{}"
 NAMESPACE = "{http://api.chartlyrics.com/}"
 
 
-def root_element(content: str):
+class ChartLyricsError(Exception):
+    ...
+
+
+def root_element(content: bytes) -> ElementTree.Element:
     parser = ElementTree.XMLParser(recover=True)
     return ElementTree.fromstring(content, parser)
 
 
-def capitalize(word: str):
+def capitalize(word: str) -> str:
     """
     Capitalizes first character
 
@@ -33,7 +38,7 @@ class Endpoints:
 @dataclass
 class XmlDataclass:
     @classmethod
-    def from_xml(cls, content: str):
+    def from_xml(cls, content: bytes):
         root = root_element(content)
         as_dict = {}
         for field in fields(cls):
@@ -42,7 +47,7 @@ class XmlDataclass:
             as_dict[field.name] = field.type(text)
         return cls(**as_dict)
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return asdict(self)
 
 
@@ -73,7 +78,7 @@ class SearchLyricResult:
     client: "ChartLyricsClient"
 
     @classmethod
-    def from_element(cls, element: ElementTree.Element, client=None) -> "SearchLyricResult":
+    def from_element(cls, element: ElementTree.Element, client: "ChartLyricsClient") -> Optional["SearchLyricResult"]:
         """
         Create class from content xml
 
@@ -107,13 +112,18 @@ class SearchLyricResult:
 
 
 class ArrayOfSearchLyricResult:
-    def __init__(self, content: str, client=None):
+    def __init__(self, content: bytes, client: "ChartLyricsClient"):
         """
         Result from Endpoints.search_text
 
         :param content str: xml content
         """
         root = root_element(content)
+        if root is None:
+            try:
+                raise ChartLyricsError(content.decode())
+            except UnicodeDecodeError:
+                raise ChartLyricsError("Unknown error")
         self.results = []
         for result in root.findall(f"{NAMESPACE}SearchLyricResult"):
             searchLyricResult = SearchLyricResult.from_element(result, client)
@@ -140,9 +150,7 @@ class ChartLyricsClient:
         params = {
             "lyricText": text,
         }
-        response = requests.get(Endpoints.search_text,
-                                params=params
-                                )
+        response = requests.get(Endpoints.search_text, params=params)
         return ArrayOfSearchLyricResult(response.content, self)
 
     def get_lyric(self, lyricId, lyricChecksum) -> GetLyricResult:
@@ -150,9 +158,7 @@ class ChartLyricsClient:
             "lyricId": lyricId,
             "lyricChecksum": lyricChecksum,
         }
-        response = requests.get(Endpoints.get_lyric,
-                                params=params
-                                )
+        response = requests.get(Endpoints.get_lyric, params=params)
         return GetLyricResult.from_xml(response.content)
 
     def search_artist_and_song(self, artist: str, song: str) -> ArrayOfSearchLyricResult:
@@ -160,7 +166,5 @@ class ChartLyricsClient:
             "artist": artist,
             "song": song,
         }
-        response = requests.get(Endpoints.search_artist_and_song,
-                                params=params
-                                )
+        response = requests.get(Endpoints.search_artist_and_song, params=params)
         return ArrayOfSearchLyricResult(response.content, self)
