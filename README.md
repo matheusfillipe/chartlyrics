@@ -1,6 +1,6 @@
 [![CircleCI Build Status](https://circleci.com/gh/matheusfillipe/chartlyrics.svg?style=shield)](https://circleci.com/gh/matheusfillipe/chartlyrics)
 [![Pypi](https://badge.fury.io/py/chartlyrics.svg)](https://pypi.org/project/chartlyrics/)
-[![Chat with me on irc](https://img.shields.io/badge/-IRC-gray?logo=gitter)](https://mangle.ga/irc)
+[![Chat with me on irc](https://img.shields.io/badge/-IRC-gray?logo=gitter)](https://connect.h4ks.com/)
 
 # ChartLyrics API
 
